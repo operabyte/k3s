@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sftp
+  labels:
+    app: sftp
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sftp
+  template:
+    metadata:
+      annotations:
+        descheduler.alpha.kubernetes.io/evict: "true"
+      labels:
+        app: sftp
+    spec:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+      containers:
+      - name: sftp
+        image: alpine:version
+        command: ["/bin/ash"]
+        args: ["/etc/ssh/start.sh"]
+        resources:
+          requests:
+            memory: "64Mi"
+          limits:
+            memory: "2Gi"
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: sftp-env
+        ports:
+        - containerPort: 22
+        volumeMounts:
+        - name: sftp-config
+          mountPath: /etc/ssh
+      volumes:
+        - name: sftp-config
+          configMap:
+            defaultMode: 0600
+            name: sftp-config
+
+      tolerations: 
+      - key: "spot" 
+        operator: "Exists"  
+        effect: "NoSchedule"
+

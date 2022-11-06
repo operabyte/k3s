@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tfoumax
+resources:
+- ../../base
+patchesStrategicMerge:
+- patches/hpa.yaml
+# ---
+replicas:
+- count: 3
+  name: api-geoip
+# ---
+patches:
+- patch: |-
+    - op: add
+      path: /metadata/annotations/alb.ingress.kubernetes.io~1certificate-arn
+      value: arn:aws:acm:eu-west-3:139107461352:certificate/9193cbb9-9bae-4e45-95e8-22cbfa859dae
+  target:
+    kind: Ingress
+# ---
+images:
+- name: api-geoip
+  newName: docker.io/widernest/api-geoip
+  newTag: 1.0.7
+# ---
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+- literals:
+  - NODE_ENV="production"
+  - USE_GRAYLOG="true"
+  - GRAYLOG_HOST="graylog.monitoring.svc.cluster.local"
+  - GRAYLOG_PORT="11107"
+  name: api-geoip-env
+- files:
+  - files/config/production.json
+  name: api-geoip-config

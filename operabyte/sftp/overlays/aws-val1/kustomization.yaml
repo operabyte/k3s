@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tfoumax
+resources:
+- ../../base
+# ---
+images:
+- name: alpine
+  newName: alpine
+  newTag: 3.12.0
+# ---
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+- name: sftp-env
+  literals:
+  - SFTP_USER="tfou-test"
+  - SFTP_PASSWORD="test"
+  - SFTP_DIRECTORIES="videofutur,factu,retour,leadeal"

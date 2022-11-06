@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+- name: front-bleme-nginx-config
+  files:
+  - files/nginx/default.conf
+- name: front-bleme-tls-config
+  files:
+  - files/tls/cert.pem
+  - files/tls/privkey.pem
+resources:
+- resources/svc.yaml
+- resources/hpa.yaml
+- resources/deploy.yaml
+- resources/pv.yaml
+- resources/tsr.yaml
+- resources/pvc.yaml
+- resources/ing.yaml
+# - resources/sa.yaml

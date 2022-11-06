@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: bleme
+resources:
+- ../../base
+# ---
+patches:
+- patch: |-
+    [
+      {"op": "replace", "path": "/spec/minReplicas", "value": 1},
+      {"op": "replace", "path": "/spec/maxReplicas", "value": 6}
+    ]
+  target:
+    kind: HorizontalPodAutoscaler
+# ---
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+- name: front-bleme-env
+  literals:
+  - NODE_ENV="production"
+  - USE_GRAYLOG="true"
+  - GRAYLOG_HOST="graylog.monitoring.svc.cluster.local"
+  - GRAYLOG_PORT="11107"
+

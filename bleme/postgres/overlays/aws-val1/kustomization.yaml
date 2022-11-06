@@ -1,0 +1,46 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: bleme
+resources:
+- ../../base
+# ---
+patches:
+- patch: |-
+    - op: add
+      path: /metadata/annotations/alb.ingress.kubernetes.io~1security-groups
+      value: alb.val1.athena.tf1.fr
+    - op: add
+      path: /metadata/annotations/alb.ingress.kubernetes.io~1certificate-arn
+      value: arn:aws:acm:eu-west-3:832279500290:certificate/23865df8-956b-4691-8144-8401e50489f0
+    - op: add
+      path: /metadata/annotations/alb.ingress.kubernetes.io~1group.name
+      value: tfoumax-prv-ingress-group
+    - op: replace
+      path: /metadata/annotations/alb.ingress.kubernetes.io~1load-balancer-attributes
+      value: routing.http.drop_invalid_header_fields.enabled=true,access_logs.s3.enabled=true,access_logs.s3.bucket=etf1-audit-s3-eu-west-3-elb-logs
+    - op: replace
+      path: /spec/rules/0/host
+      value:  tfoumax-api-geoip.val1.athena.tf1.fr           
+  target:
+    kind: Ingress
+- patch: |-
+    - op: add
+      path: /metadata/annotations/eks.amazonaws.com~1role-arn
+      value: arn:aws:iam::832279500290:role/test-lambda-tfoumax
+  target:
+    kind: ServiceAccount
+# ---
+images:
+- name: api-geoip
+  newName: docker.io/widernest/api-geoip
+  newTag: 1.0.5
+# ---
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+- literals:
+  name: api-geoip-env
+  - NODE_ENV="validation"
+- files:
+  name: api-geoip-config
+  - files/config/validation.json

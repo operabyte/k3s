@@ -1,0 +1,12 @@
+{
+  "bind": {
+    "host": "0.0.0.0",
+    "port": 80
+  },
+
+  "services": {
+    "iplocation": {
+      "endpoint": "http://ipinfos-service.val1.athena.tf1.fr/json"
+    }
+  }
+}

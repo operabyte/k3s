@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-bleme
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-bleme
+  template:
+    metadata:
+      labels:
+        app: api-bleme
+    spec:
+      containers:
+      - name: api-bleme
+        image: docker.io/widernest/api-bleme:1.0.2
+        envFrom:
+        - configMapRef:
+            name: api-bleme-env
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: api-bleme-config
+          mountPath: /usr/lib/bleme/api-bleme/config
+          readOnly: true
+      volumes:
+      - name: api-bleme-config
+        configMap:
+          name: api-bleme-config

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-bleme
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-bleme
+  template:
+    metadata:
+      labels:
+        app: front-bleme
+    spec:
+      containers:
+      - name: front-bleme
+        image: docker.io/widernest/front-bleme:1.0.5
+        envFrom:
+        - configMapRef:
+            name: front-bleme-env
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: front-bleme-public
+          mountPath: /usr/lib/bleme/front-bleme/public
+        - name: front-bleme-nginx-config
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
+        - name: front-bleme-tls-config
+          mountPath: /usr/lib/bleme/front-bleme/tls
+          readOnly: true
+      volumes:
+      - name: front-bleme-public
+        persistentVolumeClaim:
+          claimName: front-bleme-public-pvc
+      - name: front-bleme-nginx-config
+        configMap:
+          name: front-bleme-nginx-config
+      - name: front-bleme-tls-config
+        configMap:
+          name: app-bleme-tls-config

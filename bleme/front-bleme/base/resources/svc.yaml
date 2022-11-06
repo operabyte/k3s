@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-bleme
+  labels:
+    app: front-bleme
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '80'
+spec:
+  selector:
+    app: front-bleme
+  # type: NodePort
+  ports:
+  - name: front-bleme
+    port: 80
+    targetPort: 80
+    # nodePort: 30002

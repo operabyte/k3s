@@ -1,0 +1,8 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-geoip
+  namespace: tfoumax
+spec:
+  minReplicas: 3
+  maxReplicas: 6

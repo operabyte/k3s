@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: tfoumax
+  name: tfoumax-redis-config
+data:
+  redis.conf: |
+    bind 0.0.0.0
+    protected-mode no
+    maxmemory 100000000
+    maxmemory-policy allkeys-lru
+    maxmemory-samples 5

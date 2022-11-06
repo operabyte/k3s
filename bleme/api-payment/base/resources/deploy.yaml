@@ -1,0 +1,72 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-geoip
+  labels:
+    app: api-geoip
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-geoip
+  template:
+    metadata:
+      annotations:
+        ad.datadoghq.com/api-geoip.logs: '[{"source":"nodejs", "service":"api-geoip"}]'
+      labels:
+        app: api-geoip
+    spec:
+      serviceAccountName: api-geoip
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - api-geoip
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 100
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+      containers:
+      - name: api-geoip
+        image: api-geoip:version
+        resources:
+          requests:
+            memory: "256Mi"
+          limits:
+            memory: "2Gi"
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: api-geoip-env
+        ports:
+        - containerPort: 80
+          name: http-port
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 80
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+        volumeMounts:
+        - name: api-geoip-config
+          mountPath: /usr/lib/tfoumax/api-geoip/config
+          readOnly: true
+      volumes:
+      - name: api-geoip-config
+        configMap:
+          name: api-geoip-config
