@@ -3,10 +3,16 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/frontend-entry-points: https,http
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/preserve-host: "true"
+    traefik.ingress.kubernetes.io/pass-tls-cert: "true"
+    traefik.ingress.kubernetes.io/frontend-entry-points: https
     traefik.ingress.kubernetes.io/redirect-entry-point: https
     traefik.ingress.kubernetes.io/redirect-permanent: "true"
-    traefik.ingress.kubernetes.io/router.priority: "10"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
+    # traefik.ingress.kubernetes.io/router.middlewares: https
+    # traefik.ingress.kubernetes.io/router.middlewares: bleme-headers
   name: ingress-api-bleme
 spec:
   tls:

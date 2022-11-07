@@ -13,7 +13,7 @@ spec:
   tls:
   - hosts:
     - "*.bleme.fr"
-    secretName: sectls
+    secretName: sectlsu
   rules:
   - host: "*.bleme.fr"
     http:

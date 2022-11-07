@@ -15,9 +15,7 @@ module.exports = {
     client: 'pg',
     version: '15',
     connection: {
-      host:     'postgres.bleme.svc.cluster.local',
-      // host:     'http://10.43.200.200',
-      // host:     '10.43.200.200',
+      host:     'postgres.bleme.svc.cluster.local', // postgres = 10.43.200.200
       database: 'postgres',
       user:     'postgres',
       password: 'postgres',

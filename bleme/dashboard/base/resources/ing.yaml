@@ -1,0 +1,50 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`bleme.fr`)
+      services:
+        - kind: TraefikService
+          name: api@internal
+      middlewares:
+        - name: auth-dashboard
+          namespace: kube-system
+---
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     kubernetes.io/ingress.class: traefik
+#     traefik.ingress.kubernetes.io/router.priority: "20"
+#     traefik.ingress.kubernetes.io/preserve-host: "true"
+#     traefik.ingress.kubernetes.io/pass-tls-cert: "true"
+#     traefik.ingress.kubernetes.io/frontend-entry-points: https,http
+#     traefik.ingress.kubernetes.io/redirect-entry-point: https
+#     traefik.ingress.kubernetes.io/redirect-permanent: "true"
+#     ingress.kubernetes.io/ssl-redirect: "true"
+#     ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
+#     # traefik.ingress.kubernetes.io/router.middlewares: https
+#     # traefik.ingress.kubernetes.io/router.middlewares: bleme-headers
+#   name: ingress-dashboard-bleme
+# spec:
+#   tls:
+#   - secretName: sectlsu
+#     hosts:
+#     - "bleme.fr"
+#   rules:
+#     - host: bleme.fr
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: traefik-dashboard
+#                 port:
+#                   number: 9000

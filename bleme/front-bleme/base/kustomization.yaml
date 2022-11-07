@@ -19,4 +19,6 @@ resources:
 - resources/tsr.yaml
 - resources/pvc.yaml
 - resources/ing.yaml
+# - resources/hdr.yaml
+# - resources/redirect.yaml
 # - resources/sa.yaml
