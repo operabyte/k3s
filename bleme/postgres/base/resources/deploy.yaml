@@ -17,9 +17,9 @@ spec:
       containers:
       - name: postgres
         image: postgres:15
-        command: ["sh"]
+        # command: ["sh"]
         # args: ["-c", "while true; do echo $(date -u) >> /tmp/run.log; sleep 5; done"]
-        # imagePullPolicy: IfNotPresent
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432
         envFrom:
