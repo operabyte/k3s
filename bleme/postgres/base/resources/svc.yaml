@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: postgres
   labels:
-    app: bleme
+    app: postgres
 spec:
   type: ClusterIP
   clusterIP: 10.43.200.200

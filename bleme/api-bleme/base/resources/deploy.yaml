@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-bleme
+  labels:
+    app: api-bleme
 spec:
   replicas: 1
   selector:
@@ -14,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api-bleme
-        image: docker.io/widernest/api-bleme:1.0.2
+        image: docker.io/widernest/api-bleme:1.0.8
         envFrom:
         - configMapRef:
             name: api-bleme-env
@@ -24,6 +26,18 @@ spec:
         - name: api-bleme-config
           mountPath: /usr/lib/bleme/api-bleme/config
           readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 80
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
       volumes:
       - name: api-bleme-config
         configMap:
