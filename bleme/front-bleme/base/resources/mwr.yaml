@@ -1,25 +1,8 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: bleme-headers
+  name: redirect-https
 spec:
-  headers:
-    forceSTSHeader: true
-    stsPreload: true
-    contentTypeNosniff: true
-    browserXssFilter: true
-    stsIncludeSubdomains: true
-    stsSeconds: 63072000
-    frameDeny: true
-    sslRedirect: true
-    contentSecurityPolicy: |
-      default-src 'none';form-action 'none';frame-ancestors 'none';base-uri 'none'
-    # accessControlAllowMethods:
-    #   - "GET"
-    #   - "POST"
-    # accessControlAllowOriginList:
-    #   - "https://*.vadosware.io"
-    #   - "https://vadosware.io"
-    # accessControlMaxAge: 100
-    # addVaryHeader: true
-    # referrerPolicy: "same-origin"
+  redirectScheme:
+    scheme: https
+    permanent: true
