@@ -1,0 +1,31 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tfoumax
+bases:
+- ../../base
+
+patches:
+- target:
+    group: apps
+    version: v1
+    kind: StatefulSet
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/key
+      value: node-role.kubernetes.io/balanced
+    - op: replace
+      path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/values/0
+      value: balanced
+
+
+# ---
+images:
+- name: redis
+  newName: docker.io/library/redis
+  newTag: latest
+- name: redis_exporter
+  newName: docker.io/bitnami/redis-exporter
+  newTag: latest
+patchesStrategicMerge:
+- patches/sts.yaml

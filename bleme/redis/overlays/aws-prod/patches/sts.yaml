@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: tfoumax
+  name: redis
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/balanced: balanced 
