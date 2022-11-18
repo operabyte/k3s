@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api-bleme
-        image: docker.io/widernest/api-bleme:1.3.7
+        image: docker.io/widernest/api-bleme:1.3.8
         envFrom:
         - configMapRef:
             name: api-bleme-env
