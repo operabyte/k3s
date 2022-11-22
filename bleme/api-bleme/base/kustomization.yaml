@@ -6,4 +6,5 @@ resources:
 - resources/hpa.yaml
 - resources/deploy.yaml
 - resources/ing.yaml
+- resources/redirect.yaml
 # - resources/sa.yaml

@@ -16,10 +16,9 @@ resources:
 - resources/hpa.yaml
 - resources/deploy.yaml
 - resources/pv.yaml
-- resources/tsr.yaml
 - resources/pvc.yaml
 - resources/ing.yaml
-# - resources/mwr.yaml
-# - resources/hdr.yaml
-# - resources/redirect.yaml
+- resources/redirect.yaml
+- resources/hdr.yaml
+# - resources/tsr.yaml
 # - resources/sa.yaml
