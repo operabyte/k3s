@@ -1,0 +1,80 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/frontend-entry-points: https,http
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+    traefik.ingress.kubernetes.io/router.priority: "1"
+  name: ingress-api-payment
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - "*.bleme.fr"
+    secretName: sectlsu
+  rules:
+  - host: "*.bleme.fr"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-payment
+            port:
+              number: 80
+
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: my-ingress
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+# spec:
+#   tls:
+#   - hosts:
+#     - example.com
+#   secretName: example-tls-cert
+  
+#   rules:
+#   - host: example.com
+#     http:
+#       paths:
+#         - path: /
+#           pathType: Exact
+#           backend:
+#             service:
+#               name: backend-service
+#               port:
+#                 number: 80
+
+
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: api-bleme
+#   annotations:
+#     alb.ingress.kubernetes.io/target-type: ip
+#     kubernetes.io/ingress.class: alb
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
+#     alb.ingress.kubernetes.io/actions.redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+#     alb.ingress.kubernetes.io/success-codes: 200-302
+#     alb.ingress.kubernetes.io/healthcheck-path: /readiness
+#     alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
+#     PrivateDNSName: bleme-api-bleme
+# spec:
+#   rules:
+#   - host: "bleme.fr"
+#     http:
+#       paths:
+#       - path: /*
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: api-bleme
+#             port:
+#               number: 80

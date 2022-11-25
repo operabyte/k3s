@@ -1,26 +1,32 @@
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-geoip
   annotations:
-    alb.ingress.kubernetes.io/target-type: ip
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/actions.redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
-    alb.ingress.kubernetes.io/success-codes: 200-302
-    alb.ingress.kubernetes.io/healthcheck-path: /readiness
-    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
-    PrivateDNSName: tfoumax-api-geoip
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/router.middlewares: bleme-https@kubernetescrd #, bleme-blemeheaders@kubernetescrd
+    # traefik.ingress.kubernetes.io/preserve-host: "true"
+    # traefik.ingress.kubernetes.io/pass-tls-cert: "true"
+    # traefik.ingress.kubernetes.io/frontend-entry-points: "https"
+    # traefik.ingress.kubernetes.io/redirect-entry-point: "https"
+    # traefik.ingress.kubernetes.io/redirect-permanent: "true"
+    # ingress.kubernetes.io/ssl-redirect: "true"
+    # ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
+    # ingress.kubernetes.io/content-security-policy: "default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com"
+  name: ingress-api-bleme
 spec:
+  tls:
+  - secretName: sectlsu
+    hosts:
+    - "api.bleme.fr"
   rules:
-  - host: "bleme.fr"
+  - host: "api.bleme.fr"
     http:
       paths:
-      - path: /*
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: api-geoip
+            name: api-bleme
             port:
               number: 80

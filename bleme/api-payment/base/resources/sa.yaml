@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: api-geoip
-  namespace: tfoumax
+  name: api-bleme
+  namespace: bleme
   annotations:
     eks.amazonaws.com/role-arn: ''

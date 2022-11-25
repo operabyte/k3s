@@ -1,8 +1,8 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: api-geoip
-  namespace: tfoumax
+  name: api-payment
+  namespace: bleme
 spec:
   minReplicas: 1
   maxReplicas: 3
@@ -22,4 +22,4 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: api-geoip
+    name: api-payment
