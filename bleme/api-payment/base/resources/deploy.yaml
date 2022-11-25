@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api-payment
-        image: docker.io/widernest/api-payment:2.0.4
+        image: docker.io/widernest/api-payment:2.0.6
         envFrom:
         - configMapRef:
             name: api-payment-env
