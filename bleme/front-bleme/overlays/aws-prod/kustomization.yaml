@@ -16,10 +16,12 @@ patches:
 generatorOptions:
   disableNameSuffixHash: true
 configMapGenerator:
-- name: front-bleme-env
+- name: api-geoip-config
   literals:
   - NODE_ENV="production"
   - USE_GRAYLOG="true"
   - GRAYLOG_HOST="graylog.monitoring.svc.cluster.local"
   - GRAYLOG_PORT="11107"
-
+- name: front-bleme-env
+  files:
+  - files/config/.env

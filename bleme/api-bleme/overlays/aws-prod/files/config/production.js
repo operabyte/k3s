@@ -1,8 +1,9 @@
 'use strict';
 
-const DOMAIN = 'bleme.fr';
+const domain = 'bleme.fr';
 
 module.exports = {
+  domain,
   server: {
     host: '0.0.0.0',
     port: 80
@@ -27,18 +28,20 @@ module.exports = {
       name: 'account',
       cookie: {
         name: 'auth',
-        domain: DOMAIN,
-        password: 'password-should-be-32-characters',
-        isSecure: false
+        ttl: 1000 * 60 * 60 * 24 * 7 * 2,
+        isSecure: true,
+        isHttpOnly: true,
+        encoding: 'iron'
       }
     },
     adherent: {
       name: 'adherent',
       cookie: {
         name: 'adherent',
-        domain: DOMAIN,
-        password: 'password-should-be-32-characters',
-        isSecure: false
+        ttl: 1000 * 60 * 60 * 24 * 7 * 2,
+        isSecure: true,
+        isHttpOnly: true,
+        encoding: 'iron'
       }
     }
   }

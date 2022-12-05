@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: front-bleme
-        image: docker.io/widernest/front-bleme:2.0.6
+        image: docker.io/widernest/front-bleme:2.3.3
         envFrom:
         - configMapRef:
             name: front-bleme-env
